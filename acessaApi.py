@@ -1,6 +1,11 @@
 import requests
+import json
 
-response = requests.get("https://randomuser.me/api")
+def jprint(obj):
+    # create a formatted string of the Python JSON object
+    text = json.dumps(obj, sort_keys=True, indent=4)
+    print(text)
 
-print(response.status_code)
-print(response.headers)
+response = requests.get("https://randomuser.me/api/?results=10")
+
+jprint(response.json())
