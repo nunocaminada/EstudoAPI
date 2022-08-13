@@ -27,16 +27,16 @@ df = pd.DataFrame(x['results'])
 #print(df['cell'])
 
 #print(formatPhone(df['cell'].item()))
-print(df['cell'].item())
+print(df['cell'])
 
 #df.to_csv('out.csv')
-
+#
 
 
 #pf = pd.DataFrame.from_dict(response.json(), orient="index")
 
 #jprint(response.json()['results'])
-#print(response.info())
-#print(response.json()['results'])
+
+
 
 #pf.to_csv('out.csv')
