@@ -4,6 +4,7 @@ import pandas as pd
 import re
 import phonenumbers
 import csv
+import io
 
 def jprint(obj):
     # create a formatted string of the Python JSON object
@@ -16,21 +17,29 @@ def phone_format(phone_number):
     return formatted_phone_number
 
 def getData(linhas):
-    dados = requests.get("https://randomuser.me/api/?results="+str(linhas)) 
-    return dados
+    #dados = requests.get("https://randomuser.me/api/?results="+str(linhas)).content
+    url = "https://randomuser.me/api/?format=csv&nat=br&results="+str(linhas)
+    meuDataframe = pd.read_csv(url, encoding='latin_1') 
+    return meuDataframe
 
-dados = getData(6)
-dadosJson = dados.json()['results']
+#def formataPhone(meuDataframe):
+#    for row in meuDataframe:
 
-cellNumber = dadosJson[0]['cell']
-i=0
-for row in dadosJson:
-    cellNumber = dadosJson[i]['cell'] 
-    clean_phone_number = re.sub('[^0-9]+', '', cellNumber)
-    #numero = phonenumbers.parse(cellNumber,"BR")
-    #print()
-    numero = phonenumbers.format_number(clean_phone_number,phonenumbers.PhoneNumberFormat.INTERNATIONAL)
-    print(numero)
-    i+=1
+
+dataframeNomes = getData(10)
+print(dataframeNomes["cell"])
+
+
+#dadosJson = dados.json()['results']
+
+#cellNumber = dadosJson[0]['cell']
+#i=0
+#for row in dadosJson:
+#    cellNumber = dadosJson[i]['cell'] 
+#    clean_phone_number = re.sub('[^0-9]+', '', cellNumber)
+
+#    numero = phonenumbers.format_number(clean_phone_number,phonenumbers.PhoneNumberFormat.INTERNATIONAL)
+#    print(numero)
+#    i+=1
 
     
