@@ -29,20 +29,21 @@ def escreveResultado(meuDataframe):
 #Objetivo: Converter numeros de celular
 #Parametro: Pandas dataframe
 #Retorno: Pandas dataframe
-def transformaCelulares(meuDataframe):
-    meuDataframe['cell'] = meuDataframe['cell'].apply(limpaNumero)
+def transformaCelulares(meuDataframe, coluna):
+    meuDataframe[coluna] = meuDataframe[coluna].apply(limpaNumero)
     return meuDataframe
 
 #Objetivo: Limpar caracteres de uma string, deixando apenas numeros
 #Parametro: string
 #Retorno: numero
 def limpaNumero(numero):
-    return (re.sub('[^0-9]+', '', numero))
+    numero =  (re.sub('[^0-9]+', '', numero))
+    return format(int(numero[:-1]), ",").replace(",", "-") + numero[-1]
 
 #Objetivo: Imprimir percentual de pessoas por pais e por genero
 #Parametro: Dataframe
 #Retorno: nenhum
-def calculaPorcentagem(meuDataframe):
+def gravaEstatisticas(meuDataframe):
     #calcula as porcentagens e formata a saída
     porcentagemPaises = ((meuDataframe['location.country'].value_counts()/meuDataframe['location.country'].count())*100).map('{:,.2f}%'.format)
     porcentagemGeneros = ((meuDataframe['gender'].value_counts()/meuDataframe['gender'].count())*100).map('{:,.2f}%'.format)
@@ -55,12 +56,14 @@ def calculaPorcentagem(meuDataframe):
 
 #acessa a API e monta o dataframe
 dataframeOriginal = getData(600)
-#formata os numeros de celular
-cellLimpos = transformaCelulares(dataframeOriginal)
+
+#formata os numeros de celular e de telefone fixo
+DataframeTratada = transformaCelulares(dataframeOriginal,'cell')
+DataframeTratada = transformaCelulares(dataframeOriginal,'phone')
 
 #Grava em arquivo CSV
-escreveResultado(cellLimpos)
+escreveResultado(DataframeTratada)
 
 #Imprime os calculos de porcentagem
-print(calculaPorcentagem(cellLimpos))
+print(calculaPorcentagem(DataframeTratada))
     
