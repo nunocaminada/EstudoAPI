@@ -1,6 +1,9 @@
 import pandas as pd
 import time
 import re
+import matplotlib.pyplot as plt
+import numpy as np
+
 
 # Dificuldades: 
 # encoding da API, em especial dos dados que não eram BR
@@ -12,7 +15,7 @@ import re
 #Retorno: Pandas dataframe
 def getData(linhas):
     linhas +=1 #para compensar o header
-    url = "https://randomuser.me/api/?format=csv&nat=us,br,ca,fr,au&include=name&results="+str(linhas)
+    url = "https://randomuser.me/api/?format=csv&nat=us,br,ca,fr,au&results="+str(linhas)
     #le da API e coloca na codificação UTF-8
     meuDataframe = pd.read_csv(url, encoding='utf-8')
     return meuDataframe
@@ -53,6 +56,16 @@ def gravaEstatisticas(meuDataframe):
     print("\nDistribuicao percentual por genero")
     print(porcentagemGeneros)
 
+def plotaIdades(meuDataframe):
+    # plot
+    fig, ax = plt.subplots()
+    x = meuDataframe['dob.age']
+    y = meuDataframe['dob.age'].value_counts
+    ax.plot(x, y, vmin=0, vmax=100)
+    ax.set(xlim=(0, 100), xticks=np.arange(1, 100),
+           ylim=(0, 100), yticks=np.arange(1, 100))
+
+    plt.show()
 
 #acessa a API e monta o dataframe
 dataframeOriginal = getData(600)
@@ -63,7 +76,8 @@ DataframeTratada = transformaCelulares(dataframeOriginal,'phone')
 
 #Grava em arquivo CSV
 escreveResultado(DataframeTratada)
+plotaIdades(DataframeTratada)
 
 #Imprime os calculos de porcentagem
-print(calculaPorcentagem(DataframeTratada))
+print(gravaEstatisticas(DataframeTratada))
     
