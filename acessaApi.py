@@ -4,6 +4,7 @@ import re
 import matplotlib.pyplot as plt
 import numpy as np
 
+timestampArquivo = time.strftime("%Y%m%d-%H%M%S")
 
 # Dificuldades: 
 # encoding da API, em especial dos dados que não eram BR
@@ -25,7 +26,7 @@ def getData(linhas):
 #Retorno: nenhum
 def escreveResultado(meuDataframe):
     #monta um timestamp para dar nome ao arquivo
-    timestampArquivo = time.strftime("%Y%m%d-%H%M%S")
+    #timestampArquivo = time.strftime("%Y%m%d-%H%M%S")
     #grava um arquivo diferente a cada execução
     meuDataframe.to_csv('.\\Saida\\'+timestampArquivo+".csv",sep=";",encoding='ansi')
 
@@ -55,17 +56,20 @@ def gravaEstatisticas(meuDataframe):
     print(porcentagemPaises)
     print("\nDistribuicao percentual por genero")
     print(porcentagemGeneros)
+    #grava resultados
+    f = open('.\\Saida\\'+timestampArquivo+'.txt', "a")
+    f.write(str(porcentagemPaises))
+    f.write(str(porcentagemGeneros))
+    f.close()
 
+#Objetivo: Exibir grafico de distribuição das idades
+#Parametro: Dataframe
+#Retorno: nenhum
 def plotaIdades(meuDataframe):
-    # plot
-    fig, ax = plt.subplots()
     x = meuDataframe['dob.age']
     y = meuDataframe['dob.age'].value_counts
-    ax.plot(x, y, vmin=0, vmax=100)
-    ax.set(xlim=(0, 100), xticks=np.arange(1, 100),
-           ylim=(0, 100), yticks=np.arange(1, 100))
-
-    plt.show()
+    plt.hist(x,100)
+    plt.savefig('.\\Saida\\'+timestampArquivo+".png")
 
 #acessa a API e monta o dataframe
 dataframeOriginal = getData(600)
