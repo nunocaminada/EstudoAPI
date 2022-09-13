@@ -9,7 +9,7 @@ timestampArquivo = time.strftime("%Y%m%d-%H%M%S")
 # Dificuldades: 
 # encoding da API, em especial dos dados que não eram BR
 # encoding dos arquivos
-# dualidade csv/json, que apreta diferenças no tratamento que nem sempre ficam claras na documentação
+# dualidade csv/json, que apresenta diferenças no tratamento que nem sempre ficam claras na documentação
 
 #Objetivo: Buscar um número determinado de linhas da API Randomuser em formato CSV
 #Parametro: número de linhas a retornar no dataframe
@@ -25,8 +25,6 @@ def getData(linhas):
 #Parametro: Pandas dataframe
 #Retorno: nenhum
 def escreveResultado(meuDataframe):
-    #monta um timestamp para dar nome ao arquivo
-    #timestampArquivo = time.strftime("%Y%m%d-%H%M%S")
     #grava um arquivo diferente a cada execução
     meuDataframe.to_csv('.\\Saida\\'+timestampArquivo+".csv",sep=";",encoding='ansi')
 
@@ -51,12 +49,12 @@ def gravaEstatisticas(meuDataframe):
     #calcula as porcentagens e formata a saída
     porcentagemPaises = ((meuDataframe['location.country'].value_counts()/meuDataframe['location.country'].count())*100).map('{:,.2f}%'.format)
     porcentagemGeneros = ((meuDataframe['gender'].value_counts()/meuDataframe['gender'].count())*100).map('{:,.2f}%'.format)
-    #imprime os resultados
+    #imprime os resultados no terminal para controle
     print("Distribuicao percentual por pais")
     print(porcentagemPaises)
     print("\nDistribuicao percentual por genero")
     print(porcentagemGeneros)
-    #grava resultados
+    #grava resultados em arquivo
     f = open('.\\Saida\\'+timestampArquivo+'.txt', "a")
     f.write(str(porcentagemPaises))
     f.write(str(porcentagemGeneros))
