@@ -3,8 +3,13 @@ import time
 import re
 import matplotlib.pyplot as plt
 import numpy as np
+import os
 
 timestampArquivo = time.strftime("%Y%m%d-%H%M%S")
+caminhoSaida = '\\Saida'
+existe = os.path.exists(caminhoSaida)
+if not existe:
+    os.makedirs(caminhoSaida)
 
 # Dificuldades: 
 # encoding da API, em especial dos dados que não eram BR
