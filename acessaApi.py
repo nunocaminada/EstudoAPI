@@ -1,3 +1,8 @@
+# Onde tive dificuldade: 
+# encoding da API, em especial dos dados que não eram BR, que gerava erros aleatórios
+# encoding dos arquivos, que gerava erros na acentuação
+# dualidade csv/json, que apresenta diferenças no tratamento que nem sempre ficam claras na documentação
+
 import pandas as pd
 import time
 import re
@@ -5,13 +10,9 @@ import matplotlib.pyplot as plt
 import numpy as np
 import os
 
+#seta algumas variáveis úteis
 timestampArquivo = time.strftime("%Y%m%d-%H%M%S")
 caminhoSaida = '.\\Saida'
-
-# Dificuldades: 
-# encoding da API, em especial dos dados que não eram BR
-# encoding dos arquivos
-# dualidade csv/json, que apresenta diferenças no tratamento que nem sempre ficam claras na documentação
 
 #Objetivo: Buscar um número determinado de linhas da API Randomuser em formato CSV
 #Parametro: número de linhas a retornar no dataframe
@@ -76,8 +77,18 @@ existe = os.path.exists(caminhoSaida)
 if not existe:
     os.makedirs(caminhoSaida)
 
+
+#recebe o número de linhas a ser baixada da API
+print("Buscar quantas linhas da API?")
+linhas = input()
+try:
+    int(linhas)
+except ValueError:
+    print("Por favor, digite um número inteiro")
+    
+
 #acessa a API e monta o dataframe
-dataframeOriginal = getData(600)
+dataframeOriginal = getData(int(linhas))
 
 #formata os numeros de celular e de telefone fixo
 DataframeTratada = transformaCelulares(dataframeOriginal,'cell')
