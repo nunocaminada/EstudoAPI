@@ -6,10 +6,7 @@ import numpy as np
 import os
 
 timestampArquivo = time.strftime("%Y%m%d-%H%M%S")
-caminhoSaida = '\\Saida'
-existe = os.path.exists(caminhoSaida)
-if not existe:
-    os.makedirs(caminhoSaida)
+caminhoSaida = '.\\Saida'
 
 # Dificuldades: 
 # encoding da API, em especial dos dados que não eram BR
@@ -73,6 +70,11 @@ def plotaIdades(meuDataframe):
     y = meuDataframe['dob.age'].value_counts
     plt.hist(x,100)
     plt.savefig('.\\Saida\\'+timestampArquivo+".png")
+
+#verifica se o diretório de saída existe, caso não, cria
+existe = os.path.exists(caminhoSaida)
+if not existe:
+    os.makedirs(caminhoSaida)
 
 #acessa a API e monta o dataframe
 dataframeOriginal = getData(600)
